@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SimpleCompassNetguru</string>
+    <string name="arrow">Arrow</string>
+    <string name="set_destination">Set destination</string>
+    <string name="distance_to_the_destination">Distance to the destination %.2fm</string>
+    <string name="distance_to_the_destination_n_a">Distance to the destination N/A</string>
+    <string name="wrong_values">Wrong values</string>
+    <string name="ok">OK</string>
+    <string name="wrong_coordinates">Wrong coordinates</string>
+    <string name="waiting_for_location">Waiting for location…</string>
+</resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.mainFragment.MainFragment"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/compass_imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/compass"
+        app:layout_constraintBottom_toTopOf="@+id/set_destination_button"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/distance_textView" />
+
+    <ImageView
+        android:id="@+id/arrow_imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/compass_imageView"
+        app:layout_constraintEnd_toEndOf="@+id/compass_imageView"
+        app:layout_constraintStart_toStartOf="@+id/compass_imageView"
+        app:layout_constraintTop_toTopOf="@+id/compass_imageView" />
+
+    <Button
+        android:id="@+id/set_destination_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/set_destination"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/compass_imageView" />
+
+    <TextView
+        android:id="@+id/distance_textView"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="347dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/rounded_corners"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/waiting_for_location"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/compass_imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
