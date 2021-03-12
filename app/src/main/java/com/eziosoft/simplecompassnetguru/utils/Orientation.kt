@@ -19,8 +19,6 @@ class Orientation(
     private var pitch = 0.0
     private var roll = 0.0
 
-
-    //        private val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     fun start(samplingSlow: Boolean) {
         sensorManager.registerListener(
             this,

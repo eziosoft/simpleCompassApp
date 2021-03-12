@@ -47,12 +47,14 @@ class Repository @Inject constructor(
 
 
     override fun currentLocation(): LiveData<Location> = currentLocation
+    override fun currentTargetLocation(): LiveData<Location> = targetLocation
+
     override fun currentHeading(): LiveData<Float> = currentHeading
     override fun currentBearing(): LiveData<Float> = currentBearing
     override fun currentDistance(): LiveData<Float> = currentDistance
 
-    override fun setTargetLocation(location: Location) {
-        targetLocation.postValue(location)
+    override fun setTargetLocation(targetLocation: Location) {
+        this.targetLocation.postValue(targetLocation)
     }
 
     override fun start() {
@@ -89,8 +91,6 @@ class Repository @Inject constructor(
             locationCallback,
             Looper.getMainLooper()
         )
-
-        Log.d("aaa", "setupFusedLocationProvider: started")
     }
 
 
@@ -106,8 +106,6 @@ class Repository @Inject constructor(
                             targetLocation.value!!
                         )
                     )
-
-                Log.d("aaa", "onLocationResult: ${location.toString()}")
             }
         }
     }

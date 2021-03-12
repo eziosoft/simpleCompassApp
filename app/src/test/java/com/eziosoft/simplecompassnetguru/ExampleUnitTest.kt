@@ -10,8 +10,16 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun validateCoordinatesFunctionTest() {
+        var sampleCoordinates = "0,0"
+        assertTrue(com.eziosoft.simplecompassnetguru.utils.validateCoordinates(sampleCoordinates))
+
+        sampleCoordinates = "0,"
+        assertFalse(com.eziosoft.simplecompassnetguru.utils.validateCoordinates(sampleCoordinates))
+
+        sampleCoordinates = "361,2"
+        assertFalse(com.eziosoft.simplecompassnetguru.utils.validateCoordinates(sampleCoordinates))
     }
 }

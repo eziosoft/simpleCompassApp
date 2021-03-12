@@ -3,11 +3,10 @@ package com.eziosoft.simplecompassnetguru.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,7 +15,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.eziosoft.simplecompassnetguru.R
 import com.eziosoft.simplecompassnetguru.databinding.ActivityMainBinding
-import com.eziosoft.simplecompassnetguru.databinding.FragmentMainBinding
 import com.eziosoft.simplecompassnetguru.repository.Repository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

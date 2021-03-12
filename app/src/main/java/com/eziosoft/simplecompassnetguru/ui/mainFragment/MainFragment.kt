@@ -1,6 +1,5 @@
 package com.eziosoft.simplecompassnetguru.ui.mainFragment
 
-import android.location.Location
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -24,7 +23,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding = FragmentMainBinding.bind(view)
 
 
-        binding.setDestinationButton.setOnClickListener() {
+        binding.setDestinationButton.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToTargetInputFragment()
             findNavController().navigate(action)
         }
