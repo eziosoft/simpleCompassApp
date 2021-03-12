@@ -1,6 +1,9 @@
 package com.eziosoft.simplecompassnetguru.ui.targetInputFragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
@@ -12,14 +15,19 @@ import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.AndroidEntryPoint
 
 
+//TODO memory leaks caused by textChangeListener
+
 @AndroidEntryPoint
 class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
     private val viewModel by viewModels<TargetInputFragmentViewModel>()
-    private lateinit var binding: FragmentTargetInputBinding
+    private var _binding: FragmentTargetInputBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentTargetInputBinding.bind(view)
+        _binding = FragmentTargetInputBinding.bind(view)
+
 
         binding.targetLocationEditText.doOnTextChanged { text, _, _, _ ->
             if (!validateCoordinates(text.toString())) binding.targetLocationEditText.error =
@@ -48,4 +56,8 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
     }
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -15,12 +15,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
     private val viewModel by viewModels<MainFragmentViewModel>()
-    private lateinit var binding: FragmentMainBinding
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMainBinding.bind(view)
+        _binding = FragmentMainBinding.bind(view)
 
 
         binding.setDestinationButton.setOnClickListener {
@@ -80,5 +81,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun rotateImage(imageView: ImageView, angle: Float) {
         imageView.rotation = angle
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
