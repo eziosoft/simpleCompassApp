@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.targetInputFragment.TargetInputFragment">
+    tools:context=".ui.targetInputFragment.TargetInputFragment"
+    android:id="@+id/targetInputFragmentLayout">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/targetLocationTextInputLayout"
