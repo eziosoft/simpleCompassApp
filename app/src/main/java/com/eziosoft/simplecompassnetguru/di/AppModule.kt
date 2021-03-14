@@ -2,6 +2,9 @@ package com.eziosoft.simplecompassnetguru.di
 
 import android.content.Context
 import android.hardware.SensorManager
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.eziosoft.simplecompassnetguru.utils.Orientation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,6 +24,8 @@ object AppModule {
     fun provideFusedLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
     }
+
+
 
 
 }

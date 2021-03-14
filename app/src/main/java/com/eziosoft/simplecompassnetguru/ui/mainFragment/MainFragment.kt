@@ -22,6 +22,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
+        binding.arrowImageView.isVisible = false
 
 
         binding.setDestinationButton.setOnClickListener {
@@ -30,7 +31,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
 
-        binding.arrowImageView.isVisible = false
         viewModel.repository.currentHeading().observe(viewLifecycleOwner) { heading ->
             setCompassHeading(heading)
         }
@@ -38,7 +38,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewModel.repository.currentBearing().observe(viewLifecycleOwner) { bearing ->
             viewModel.repository.currentHeading().value?.let { heading ->
                 setCompassBearing(heading - bearing)
-                binding.arrowImageView.isVisible = true
+                if (!binding.arrowImageView.isVisible) binding.arrowImageView.isVisible = true
             }
         }
 
@@ -48,14 +48,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 distance
             )
         }
-
-//        viewModel.repository.currentLocation().observe(viewLifecycleOwner) { location ->
-//            Toast.makeText(
-//                requireContext(),
-//                "Location: ${location.longitude},${location.latitude}",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
     }
 
 

@@ -1,15 +1,25 @@
 package com.eziosoft.simplecompassnetguru.ui.targetInputFragment
 
+import android.content.Context
 import android.location.Location
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.eziosoft.simplecompassnetguru.repository.Repository
+import com.eziosoft.simplecompassnetguru.utils.TARGET_POSITION
+import com.eziosoft.simplecompassnetguru.utils.dataStore
 import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TargetInputFragmentViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     state: SavedStateHandle,
     val repository: Repository
 ) : ViewModel() {
@@ -29,10 +39,19 @@ class TargetInputFragmentViewModel @Inject constructor(
                 longitude = lon
                 repository.setTargetLocation(this)
             }
+
+            viewModelScope.launch {
+                context.dataStore.edit { settings ->
+                    settings[TARGET_POSITION] = coordinates
+                }
+            }
         }
     }
 
-
+    fun getLastCoordinates() =
+        context.dataStore.data.map {
+            it[TARGET_POSITION] ?: ""
+        }
 
 
 }

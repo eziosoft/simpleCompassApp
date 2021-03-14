@@ -36,7 +36,7 @@ class Repository @Inject constructor(
                     currentHeading.postValue(azimuth.toFloat())
                     if (currentLocation.value != null && targetLocation.value != null)
                         currentBearing.postValue(
-                            calculateBearing(
+                            TargetCalculations.calculateBearing(
                                 currentLocation.value!!,
                                 targetLocation.value!!
                             )
@@ -82,8 +82,8 @@ class Repository @Inject constructor(
         }
 
         val locationRequest = LocationRequest.create()?.apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 1000
+            fastestInterval = 1000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
         fusedLocationProviderClient.requestLocationUpdates(
@@ -101,7 +101,7 @@ class Repository @Inject constructor(
                 currentLocation.postValue(location)
                 if (currentLocation.value != null && targetLocation.value != null)
                     currentDistance.postValue(
-                        calculateDistance(
+                        TargetCalculations.calculateDistance(
                             currentLocation.value!!,
                             targetLocation.value!!
                         )
@@ -110,11 +110,5 @@ class Repository @Inject constructor(
         }
     }
 
-
-    private fun calculateBearing(currentLocation: Location, targetLocation: Location): Float =
-        currentLocation.bearingTo(targetLocation)
-
-    private fun calculateDistance(currentLocation: Location, targetLocation: Location): Float =
-        currentLocation.distanceTo(targetLocation)
 
 }

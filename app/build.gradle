@@ -40,6 +40,8 @@ android {
 
     testOptions {
         animationsDisabled = true
+//        unitTests.includeAndroidResources = true
+//        unitTests.returnDefaultValues = true
     }
 }
 
@@ -54,13 +56,18 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // Optional -- Robolectric environment
+//    testImplementation 'androidx.test:core:1.0.0'
+    // Optional -- Mockito framework
+//    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation "com.google.truth:truth:1.1.2"
 
-    // Hilt
+
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
-
+    //fragment ktx
     def fragment_ktx = "1.3.1"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
 
@@ -70,21 +77,25 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
+    //coroutines
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2-native-mt'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
 
+    //life cycle
     def lifeCycleVersion = '2.3.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifeCycleVersion"
 
+    //maps
     implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
 
-
     //datastore
-//    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha08"
 
 
+
+    //leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
 }
 

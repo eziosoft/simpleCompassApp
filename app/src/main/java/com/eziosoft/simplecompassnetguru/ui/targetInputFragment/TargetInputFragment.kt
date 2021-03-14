@@ -13,6 +13,8 @@ import com.eziosoft.simplecompassnetguru.R
 import com.eziosoft.simplecompassnetguru.databinding.FragmentTargetInputBinding
 import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 
 //TODO memory leaks caused by textChangeListener
@@ -28,7 +30,9 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTargetInputBinding.bind(view)
 
-
+        runBlocking {
+            binding.targetLocationEditText.setText(viewModel.getLastCoordinates().first())
+        }
         binding.targetLocationEditText.doOnTextChanged { text, _, _, _ ->
             if (!validateCoordinates(text.toString())) binding.targetLocationEditText.error =
                 getString(
@@ -43,7 +47,6 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
         binding.okButton.setOnClickListener {
             if (validateCoordinates(binding.targetLocationEditText.text.toString())) {
                 viewModel.saveCoordinates(binding.targetLocationEditText.text.toString())
-
                 requireActivity().onBackPressed()
             } else {
                 Toast.makeText(
