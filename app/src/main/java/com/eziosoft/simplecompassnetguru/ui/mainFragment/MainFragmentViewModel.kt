@@ -15,14 +15,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor(
     state: SavedStateHandle,
-    private val defaultRepository: DefaultRepository
+    private val repository: DefaultRepository
 ) : ViewModel() {
 //TODO save coordinates to state in case of process death
 
-    val currentHeading = defaultRepository.currentHeading()
-    val currentBearing = defaultRepository.currentBearing()
-    val currentDistance = defaultRepository.currentDistance()
+    val currentHeading = repository.currentHeading()
+    val currentBearing = repository.currentBearing()
+    val currentDistance = repository.currentDistance()
 
-    fun startReceivingData() = defaultRepository.start()
-    fun stopReceivingData() = defaultRepository.stop()
+    fun startReceivingData() = repository.start()
+    fun stopReceivingData() = repository.stop()
 }
