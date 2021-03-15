@@ -1,3 +1,9 @@
+<!--
+  ~ Created by Bartosz Szczygiel on 3/15/21 2:18 PM
+  ~  Copyright (c) 2021 . All rights reserved.
+  ~  Last modified 3/11/21 8:10 PM
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.SimpleCompassNetguru" parent="Theme.MaterialComponents.DayNight.DarkActionBar">

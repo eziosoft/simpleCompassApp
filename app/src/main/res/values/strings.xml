@@ -1,3 +1,9 @@
+<!--
+  ~ Created by Bartosz Szczygiel on 3/15/21 2:18 PM
+  ~  Copyright (c) 2021 . All rights reserved.
+  ~  Last modified 3/12/21 1:14 PM
+  -->
+
 <resources>
     <string name="app_name">SimpleCompassNetguru</string>
     <string name="arrow">Arrow</string>

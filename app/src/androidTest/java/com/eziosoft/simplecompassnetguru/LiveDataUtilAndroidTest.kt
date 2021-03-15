@@ -1,3 +1,9 @@
+/*
+ * Created by Bartosz Szczygiel on 3/15/21 2:18 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 3/14/21 10:16 PM
+ */
+
 package com.eziosoft.simplecompassnetguru
 
 import androidx.lifecycle.LiveData

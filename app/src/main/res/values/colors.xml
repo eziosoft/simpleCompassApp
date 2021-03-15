@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Bartosz Szczygiel on 3/15/21 2:18 PM
+  ~  Copyright (c) 2021 . All rights reserved.
+  ~  Last modified 3/12/21 1:56 PM
+  -->
+
 <resources>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

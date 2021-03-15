@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Bartosz Szczygiel on 3/15/21 2:18 PM
+  ~  Copyright (c) 2021 . All rights reserved.
+  ~  Last modified 12/7/20 10:43 PM
+  -->
+
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <translate
         android:duration="200"
