@@ -31,18 +31,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
 
-        viewModel.repository.currentHeading().observe(viewLifecycleOwner) { heading ->
+        viewModel.defaultRepository.currentHeading().observe(viewLifecycleOwner) { heading ->
             setCompassHeading(heading)
         }
 
-        viewModel.repository.currentBearing().observe(viewLifecycleOwner) { bearing ->
-            viewModel.repository.currentHeading().value?.let { heading ->
+        viewModel.defaultRepository.currentBearing().observe(viewLifecycleOwner) { bearing ->
+            viewModel.defaultRepository.currentHeading().value?.let { heading ->
                 setCompassBearing(heading - bearing)
                 if (!binding.arrowImageView.isVisible) binding.arrowImageView.isVisible = true
             }
         }
 
-        viewModel.repository.currentDistance().observe(viewLifecycleOwner) { distance ->
+        viewModel.defaultRepository.currentDistance().observe(viewLifecycleOwner) { distance ->
             binding.distanceTextView.text = getString(
                 R.string.distance_to_the_destination,
                 distance
@@ -61,13 +61,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.repository.start()
+        viewModel.defaultRepository.start()
     }
 
 
     override fun onPause() {
         super.onPause()
-        viewModel.repository.stop()
+        viewModel.defaultRepository.stop()
     }
 
 

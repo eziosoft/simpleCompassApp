@@ -15,7 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.eziosoft.simplecompassnetguru.R
 import com.eziosoft.simplecompassnetguru.databinding.ActivityMainBinding
-import com.eziosoft.simplecompassnetguru.repository.Repository
+import com.eziosoft.simplecompassnetguru.repository.DefaultRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var repository: Repository
+    lateinit var defaultRepository: DefaultRepository
 
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding

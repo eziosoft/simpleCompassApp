@@ -6,13 +6,12 @@ import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.simplecompassnetguru.repository.Repository
+import com.eziosoft.simplecompassnetguru.repository.DefaultRepository
 import com.eziosoft.simplecompassnetguru.utils.TARGET_POSITION
 import com.eziosoft.simplecompassnetguru.utils.dataStore
 import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +20,7 @@ import javax.inject.Inject
 class TargetInputFragmentViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     state: SavedStateHandle,
-    val repository: Repository
+    val defaultRepository: DefaultRepository
 ) : ViewModel() {
 
     //TODO save coordinates for future use
@@ -37,7 +36,7 @@ class TargetInputFragmentViewModel @Inject constructor(
             location.apply {
                 latitude = lat
                 longitude = lon
-                repository.setTargetLocation(this)
+                defaultRepository.setTargetLocation(this)
             }
 
             viewModelScope.launch {

@@ -1,4 +1,4 @@
-package com.eziosoft.simplecompassnetguru.repository
+package com.eziosoft.simplecompassnetguru.utils
 
 import android.location.Location
 

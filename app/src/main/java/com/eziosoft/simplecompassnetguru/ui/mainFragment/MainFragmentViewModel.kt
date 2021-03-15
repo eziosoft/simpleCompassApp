@@ -2,14 +2,14 @@ package com.eziosoft.simplecompassnetguru.ui.mainFragment
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.eziosoft.simplecompassnetguru.repository.Repository
+import com.eziosoft.simplecompassnetguru.repository.DefaultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor(
     state: SavedStateHandle,
-    val repository: Repository
+    val defaultRepository: DefaultRepository
 ) : ViewModel() {
 //TODO save coordinates to state in case of process death
 

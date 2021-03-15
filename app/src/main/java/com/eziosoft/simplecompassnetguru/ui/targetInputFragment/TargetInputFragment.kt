@@ -1,9 +1,6 @@
 package com.eziosoft.simplecompassnetguru.ui.targetInputFragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
@@ -40,7 +37,7 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
                 )
         }
 
-        viewModel.repository.currentTargetLocation().value?.let { location ->
+        viewModel.defaultRepository.currentTargetLocation().value?.let { location ->
             binding.targetLocationEditText.setText("${location.latitude},${location.longitude}")
         }
 
