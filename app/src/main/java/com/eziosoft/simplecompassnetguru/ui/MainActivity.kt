@@ -8,10 +8,8 @@ package com.eziosoft.simplecompassnetguru.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -34,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -44,11 +41,8 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_main) as NavHostFragment
         navController = navHostFragment.findNavController()
 
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.mainFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
-
 
         //quick and dirty way to ask permissions
         requestPermissions()
