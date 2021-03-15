@@ -43,7 +43,7 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
                 )
         }
 
-        viewModel.defaultRepository.currentTargetLocation().value?.let { location ->
+        viewModel.currentTargetLocation.value?.let { location ->
             binding.targetLocationEditText.setText("${location.latitude},${location.longitude}")
         }
 

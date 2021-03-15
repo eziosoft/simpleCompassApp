@@ -37,18 +37,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
 
-        viewModel.defaultRepository.currentHeading().observe(viewLifecycleOwner) { heading ->
+        viewModel.currentHeading.observe(viewLifecycleOwner) { heading ->
             setCompassHeading(heading)
         }
 
-        viewModel.defaultRepository.currentBearing().observe(viewLifecycleOwner) { bearing ->
-            viewModel.defaultRepository.currentHeading().value?.let { heading ->
+        viewModel.currentBearing.observe(viewLifecycleOwner) { bearing ->
+            viewModel.currentHeading.value?.let { heading ->
                 setCompassBearing(heading - bearing)
                 if (!binding.arrowImageView.isVisible) binding.arrowImageView.isVisible = true
             }
         }
 
-        viewModel.defaultRepository.currentDistance().observe(viewLifecycleOwner) { distance ->
+        viewModel.currentDistance.observe(viewLifecycleOwner) { distance ->
             binding.distanceTextView.text = getString(
                 R.string.distance_to_the_destination,
                 distance
@@ -56,6 +56,21 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.startReceivingData()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopReceivingData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private fun setCompassBearing(bearing: Float) {
         rotateImage(binding.arrowImageView, 360 - bearing)
@@ -65,24 +80,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         rotateImage(binding.compassImageView, 360 - heading)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.defaultRepository.start()
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.defaultRepository.stop()
-    }
-
-
     private fun rotateImage(imageView: ImageView, angle: Float) {
         imageView.rotation = angle
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

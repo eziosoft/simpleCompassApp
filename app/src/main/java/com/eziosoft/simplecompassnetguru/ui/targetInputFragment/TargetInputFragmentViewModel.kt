@@ -26,11 +26,13 @@ import javax.inject.Inject
 class TargetInputFragmentViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     state: SavedStateHandle,
-    val defaultRepository: DefaultRepository
+    private val defaultRepository: DefaultRepository
 ) : ViewModel() {
 
     //TODO save coordinates for future use
     // save coordinates to state in case of process death
+
+    val currentTargetLocation = defaultRepository.currentTargetLocation()
 
     fun saveCoordinates(coordinates: String) {
         if (validateCoordinates(coordinates)) {
