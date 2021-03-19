@@ -55,7 +55,7 @@ class TargetInputFragmentViewModel @Inject constructor(
         }
     }
 
-    fun getLastCoordinates() =
+    suspend fun getLastCoordinates() =
         context.dataStore.data.map {
             it[TARGET_POSITION] ?: ""
         }

@@ -6,12 +6,6 @@
 
 package com.eziosoft.simplecompassnetguru.utils
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-
 fun validateCoordinates(coordinates: String): Boolean {
     val regex = "^(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\$".toRegex()
     return if (!coordinates.matches(regex)) false

@@ -6,11 +6,22 @@
 
 package com.eziosoft.simplecompassnetguru.utils
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.eziosoft.simplecompassnetguru.MainCoroutineRule
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Rule
 import org.junit.Test
 
-
+@ExperimentalCoroutinesApi
 class UtilsKtTest {
+
+//    @get:Rule
+//    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+
+//    @get:Rule
+//    var mainCoroutineRule = MainCoroutineRule()
 
     @Test
     fun `validateCoordinate returns false`() {

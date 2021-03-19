@@ -12,15 +12,16 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.eziosoft.simplecompassnetguru.R
 import com.eziosoft.simplecompassnetguru.databinding.FragmentTargetInputBinding
 import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
-//TODO memory leaks caused by textChangeListener
 
 @AndroidEntryPoint
 class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
@@ -33,9 +34,10 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTargetInputBinding.bind(view)
 
-        runBlocking {
+        lifecycleScope.launch {
             binding.targetLocationEditText.setText(viewModel.getLastCoordinates().first())
         }
+
         binding.targetLocationEditText.doOnTextChanged { text, _, _, _ ->
             if (!validateCoordinates(text.toString())) binding.targetLocationEditText.error =
                 getString(
