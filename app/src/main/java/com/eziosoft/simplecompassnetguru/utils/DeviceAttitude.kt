@@ -10,21 +10,30 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 
-//TODO should implement lifecycle
-class Orientation(
+class DeviceAttitude(
     private val sensorManager: SensorManager,
-    private val orientationListener: OrientationListener?
+    private val deviceAttitudeListener: DeviceAttitudeListener?
 ) :
-    SensorEventListener {
-    private val rotationVectorSensor: Sensor by lazy { sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) }
+    SensorEventListener, LifecycleObserver {
     private val SENSOR_TYPE = Sensor.TYPE_ROTATION_VECTOR
+
+    private val rotationVectorSensor: Sensor by lazy { sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) }
     private var rotMat = FloatArray(9)
     private var vals = FloatArray(3)
+
     private var azimuth = 0.0
     private var pitch = 0.0
     private var roll = 0.0
 
+    fun addLifeCycle(lifecycle: Lifecycle) {
+        lifecycle.addObserver(this)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun start(samplingSlow: Boolean) {
         sensorManager.registerListener(
             this,
@@ -33,6 +42,7 @@ class Orientation(
         )
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stop() {
         sensorManager.unregisterListener(this)
     }
@@ -47,19 +57,20 @@ class Orientation(
             SensorManager
                 .remapCoordinateSystem(
                     rotMat,
-                    SensorManager.AXIS_X, SensorManager.AXIS_Y,
+                    SensorManager.AXIS_X,
+                    SensorManager.AXIS_Y,
                     rotMat
                 )
             SensorManager.getOrientation(rotMat, vals)
             azimuth = Math.toDegrees(vals[0].toDouble()) // in degrees [-180, +180]
             pitch = Math.toDegrees(vals[1].toDouble())
             roll = Math.toDegrees(vals[2].toDouble())
-            orientationListener?.onSensorChanged(azimuth, pitch, roll)
+            deviceAttitudeListener?.onSensorChanged(azimuth, pitch, roll)
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
-    interface OrientationListener {
+    interface DeviceAttitudeListener {
         fun onSensorChanged(azimuth: Double, pitch: Double, roll: Double)
     }
 }

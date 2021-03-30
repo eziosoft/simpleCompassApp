@@ -7,6 +7,7 @@
 package com.eziosoft.simplecompassnetguru.repository
 
 import android.location.Location
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 
 interface Repository {
@@ -18,8 +19,10 @@ interface Repository {
 
     fun currentDistance(): LiveData<Float>
     fun setTargetLocation(targetLocation: Location)
-    fun start()
-    fun stop()
+//    fun start()
+//    fun stop()
+
+    fun addLifeCycle(lifecycle: Lifecycle)
 
 
 }

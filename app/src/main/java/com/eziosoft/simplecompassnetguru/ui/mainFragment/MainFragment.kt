@@ -25,6 +25,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding get() = _binding!!
 
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
@@ -54,18 +56,21 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 distance
             )
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.startReceivingData()
-    }
 
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.stopReceivingData()
+        viewModel.addRepositoryLifeCycle(lifecycle)
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        viewModel.startReceivingData()
+//    }
+//
+//
+//    override fun onPause() {
+//        super.onPause()
+//        viewModel.stopReceivingData()
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

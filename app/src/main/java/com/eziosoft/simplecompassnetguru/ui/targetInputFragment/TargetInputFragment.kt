@@ -19,8 +19,6 @@ import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-
 
 
 @AndroidEntryPoint
@@ -68,4 +66,6 @@ class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

@@ -14,9 +14,8 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.eziosoft.simplecompassnetguru.utils.Orientation
+import androidx.lifecycle.*
+import com.eziosoft.simplecompassnetguru.utils.DeviceAttitude
 import com.eziosoft.simplecompassnetguru.utils.TargetCalculations
 import com.google.android.gms.location.*
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,7 +26,7 @@ import javax.inject.Singleton
 class DefaultRepository @Inject constructor(
     @ApplicationContext val context: Context,
     private val fusedLocationProviderClient: FusedLocationProviderClient
-) : Repository {
+) : Repository, LifecycleObserver {
 
     private val currentHeading = MutableLiveData<Float>()
     private val currentLocation = MutableLiveData<Location>()
@@ -36,18 +35,19 @@ class DefaultRepository @Inject constructor(
     private val targetLocation = MutableLiveData<Location>()
 
     private val orientation by lazy {
-        Orientation(
+        DeviceAttitude(
             context.getSystemService(Context.SENSOR_SERVICE) as SensorManager,
-            object : Orientation.OrientationListener {
+            object : DeviceAttitude.DeviceAttitudeListener {
                 override fun onSensorChanged(azimuth: Double, pitch: Double, roll: Double) {
                     currentHeading.postValue(azimuth.toFloat())
-                    if (currentLocation.value != null && targetLocation.value != null)
+                    if (currentLocation.value != null && targetLocation.value != null) {
                         currentBearing.postValue(
                             TargetCalculations.calculateBearing(
                                 currentLocation.value!!,
                                 targetLocation.value!!
                             )
                         )
+                    }
                 }
             })
     }
@@ -64,12 +64,18 @@ class DefaultRepository @Inject constructor(
         this.targetLocation.postValue(targetLocation)
     }
 
-    override fun start() {
+    override fun addLifeCycle(lifecycle: Lifecycle) {
+        lifecycle.addObserver(this)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private fun start() {
         orientation.start(false)
         setupFusedLocationProvider()
     }
 
-    override fun stop() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    private fun stop() {
         orientation.stop()
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
