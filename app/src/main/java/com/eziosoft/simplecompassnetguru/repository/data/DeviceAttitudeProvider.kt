@@ -1,22 +1,26 @@
 /*
- * Created by Bartosz Szczygiel on 3/15/21 2:18 PM
+ * Created by Bartosz Szczygiel on 3/31/21 9:35 PM
  *  Copyright (c) 2021 . All rights reserved.
- *  Last modified 3/15/21 2:17 PM
+ *  Last modified 3/30/21 9:52 PM
  */
 
-package com.eziosoft.simplecompassnetguru.utils
+package com.eziosoft.simplecompassnetguru.repository.data
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import android.util.Log
+import androidx.lifecycle.*
+import javax.inject.Singleton
 
-class DeviceAttitude(
-    private val sensorManager: SensorManager,
-    private val deviceAttitudeListener: DeviceAttitudeListener?
+
+data class Attitude(val azimuth: Double, val pitch: Double, val roll: Double)
+
+
+@Singleton
+class DeviceAttitudeProvider(
+    private val sensorManager: SensorManager
 ) :
     SensorEventListener, LifecycleObserver {
     private val SENSOR_TYPE = Sensor.TYPE_ROTATION_VECTOR
@@ -25,25 +29,27 @@ class DeviceAttitude(
     private var rotMat = FloatArray(9)
     private var vals = FloatArray(3)
 
-    private var azimuth = 0.0
-    private var pitch = 0.0
-    private var roll = 0.0
+    private val _attitude = MutableLiveData<Attitude>()
+    val attitude: LiveData<Attitude> = _attitude
 
     fun addLifeCycle(lifecycle: Lifecycle) {
         lifecycle.addObserver(this)
     }
 
+
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun start(samplingSlow: Boolean) {
+    fun start() {
+        Log.d("aaa", "start: AttitudeProvider")
         sensorManager.registerListener(
             this,
-            rotationVectorSensor,
-            if (samplingSlow) 250000 else 10000
+            rotationVectorSensor, 10000
         )
+//        if (samplingSlow) 250000 else 10000
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stop() {
+        Log.d("aaa", "stop: AttitudeProvider")
         sensorManager.unregisterListener(this)
     }
 
@@ -62,15 +68,13 @@ class DeviceAttitude(
                     rotMat
                 )
             SensorManager.getOrientation(rotMat, vals)
-            azimuth = Math.toDegrees(vals[0].toDouble()) // in degrees [-180, +180]
-            pitch = Math.toDegrees(vals[1].toDouble())
-            roll = Math.toDegrees(vals[2].toDouble())
-            deviceAttitudeListener?.onSensorChanged(azimuth, pitch, roll)
+            val azimuth = Math.toDegrees(vals[0].toDouble()) // in degrees [-180, +180]
+            val pitch = Math.toDegrees(vals[1].toDouble())
+            val roll = Math.toDegrees(vals[2].toDouble())
+            _attitude.postValue(Attitude(azimuth, pitch, roll))
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
-    interface DeviceAttitudeListener {
-        fun onSensorChanged(azimuth: Double, pitch: Double, roll: Double)
-    }
+
 }

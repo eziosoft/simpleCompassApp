@@ -7,6 +7,7 @@
 package com.eziosoft.simplecompassnetguru.ui.mainFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
@@ -25,11 +26,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding get() = _binding!!
 
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
+
+        if(viewModel.currentTarget.value==null)  binding.distanceTextView.text = getString(R.string.no_target_location)
         binding.arrowImageView.isVisible = false
 
 
@@ -56,6 +57,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 distance
             )
         }
+
+
+
+
+
 
 
         viewModel.addRepositoryLifeCycle(lifecycle)

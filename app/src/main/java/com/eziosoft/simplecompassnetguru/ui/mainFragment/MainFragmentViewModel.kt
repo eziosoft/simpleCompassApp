@@ -24,9 +24,10 @@ class MainFragmentViewModel @Inject constructor(
     val currentHeading = repository.currentHeading()
     val currentBearing = repository.currentBearing()
     val currentDistance = repository.currentDistance()
+    val currentLocation = repository.currentLocation()
+    val currentTarget = repository.currentTargetLocation()
 
-//    fun startReceivingData() = repository.start()
-//    fun stopReceivingData() = repository.stop()
+
 
     fun addRepositoryLifeCycle(lifecycle: Lifecycle) = repository.addLifeCycle(lifecycle)
 }

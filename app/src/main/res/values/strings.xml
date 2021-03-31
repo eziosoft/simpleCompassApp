@@ -14,4 +14,5 @@
     <string name="ok">OK</string>
     <string name="wrong_coordinates">Wrong coordinates</string>
     <string name="waiting_for_location">Waiting for location…</string>
+    <string name="no_target_location">No target location</string>
 </resources>

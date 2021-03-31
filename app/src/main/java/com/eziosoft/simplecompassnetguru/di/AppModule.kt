@@ -7,6 +7,9 @@
 package com.eziosoft.simplecompassnetguru.di
 
 import android.content.Context
+import android.hardware.SensorManager
+import com.eziosoft.simplecompassnetguru.repository.data.DeviceAttitudeProvider
+import com.eziosoft.simplecompassnetguru.repository.data.LocationProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -26,7 +29,26 @@ object AppModule {
         return LocationServices.getFusedLocationProviderClient(context)
     }
 
+    @Provides
+    @Singleton
+    fun provideLocationProvider(
+        @ApplicationContext context: Context,
+        fusedLocationProviderClient: FusedLocationProviderClient
+    ): LocationProvider {
+        return LocationProvider(context, fusedLocationProviderClient)
+    }
 
+    @Provides
+    @Singleton
+    fun provideSensorManager(@ApplicationContext context: Context): SensorManager {
+        return context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeviceAttitudeProvider(sensorManager: SensorManager): DeviceAttitudeProvider {
+        return DeviceAttitudeProvider(sensorManager)
+    }
 
 
 }
