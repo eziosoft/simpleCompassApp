@@ -10,7 +10,6 @@ import android.content.Context
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.*
-import com.eziosoft.simplecompassnetguru.repository.data.Attitude
 import com.eziosoft.simplecompassnetguru.repository.data.DeviceAttitudeProvider
 import com.eziosoft.simplecompassnetguru.repository.data.LocationProvider
 import com.eziosoft.simplecompassnetguru.utils.TAG
@@ -43,7 +42,7 @@ class DefaultRepository @Inject constructor(
         Log.i(TAG, "start: Repository")
         job = CoroutineScope(Dispatchers.IO).launch {
             launch {
-                locationProvider.currentLocation.collect() { location ->
+                locationProvider.currentLocation.collect { location ->
                     if (targetLocation.value != null) {
                         currentDistance.postValue(
                             TargetCalculations.calculateDistance(
@@ -57,7 +56,7 @@ class DefaultRepository @Inject constructor(
             }
 
             launch {
-                deviceAttitudeProvider.attitude.collect() { attitude ->
+                deviceAttitudeProvider.attitude.collect { attitude ->
                     if (currentLocation.value != null && targetLocation.value != null) {
                         currentBearing.postValue(
                             TargetCalculations.calculateBearing(

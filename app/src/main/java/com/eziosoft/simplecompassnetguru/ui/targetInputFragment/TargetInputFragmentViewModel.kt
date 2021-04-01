@@ -18,10 +18,12 @@ import com.eziosoft.simplecompassnetguru.utils.dataStore
 import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class TargetInputFragmentViewModel @Inject constructor(
     @ApplicationContext val context: Context,
@@ -59,6 +61,4 @@ class TargetInputFragmentViewModel @Inject constructor(
         context.dataStore.data.map {
             it[TARGET_POSITION] ?: ""
         }
-
-
 }

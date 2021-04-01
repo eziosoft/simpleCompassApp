@@ -19,9 +19,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Singleton
 
 
-data class Attitude(val azimuth: Double, val pitch: Double, val roll: Double)
-
-
 @ExperimentalCoroutinesApi
 @Singleton
 class DeviceAttitudeProvider(
@@ -78,6 +75,9 @@ class DeviceAttitudeProvider(
         }
 
     }
+
+
+    data class Attitude(val azimuth: Double, val pitch: Double, val roll: Double)
 
 
 }

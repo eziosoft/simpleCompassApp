@@ -17,10 +17,12 @@ import com.eziosoft.simplecompassnetguru.R
 import com.eziosoft.simplecompassnetguru.databinding.FragmentTargetInputBinding
 import com.eziosoft.simplecompassnetguru.utils.validateCoordinates
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class TargetInputFragment : Fragment(R.layout.fragment_target_input) {
     private val viewModel by viewModels<TargetInputFragmentViewModel>()

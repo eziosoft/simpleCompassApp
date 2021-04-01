@@ -7,11 +7,8 @@
 package com.eziosoft.simplecompassnetguru.ui.mainFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import android.view.animation.Interpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment

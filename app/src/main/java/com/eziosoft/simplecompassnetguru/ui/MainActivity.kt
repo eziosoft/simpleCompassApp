@@ -21,8 +21,10 @@ import com.eziosoft.simplecompassnetguru.R
 import com.eziosoft.simplecompassnetguru.databinding.ActivityMainBinding
 import com.eziosoft.simplecompassnetguru.repository.DefaultRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
