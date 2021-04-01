@@ -19,8 +19,8 @@ interface Repository {
 
     fun currentDistance(): LiveData<Float>
     fun setTargetLocation(targetLocation: Location)
-//    fun start()
-//    fun stop()
+    fun start()
+    fun stop()
 
     fun addLifeCycle(lifecycle: Lifecycle)
 

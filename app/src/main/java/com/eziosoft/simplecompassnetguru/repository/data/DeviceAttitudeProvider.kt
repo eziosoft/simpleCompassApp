@@ -11,70 +11,73 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import androidx.lifecycle.*
+import com.eziosoft.simplecompassnetguru.utils.TAG
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Singleton
 
 
 data class Attitude(val azimuth: Double, val pitch: Double, val roll: Double)
 
 
+@ExperimentalCoroutinesApi
 @Singleton
 class DeviceAttitudeProvider(
     private val sensorManager: SensorManager
-) :
-    SensorEventListener, LifecycleObserver {
+) {
     private val SENSOR_TYPE = Sensor.TYPE_ROTATION_VECTOR
 
     private val rotationVectorSensor: Sensor by lazy { sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) }
     private var rotMat = FloatArray(9)
     private var vals = FloatArray(3)
 
-    private val _attitude = MutableLiveData<Attitude>()
-    val attitude: LiveData<Attitude> = _attitude
 
-    fun addLifeCycle(lifecycle: Lifecycle) {
-        lifecycle.addObserver(this)
-    }
+    val attitude = attitudeFlow()
 
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun start() {
-        Log.d("aaa", "start: AttitudeProvider")
+    private fun attitudeFlow() = callbackFlow<Attitude> {
+        val callback = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
+                if (event.sensor.type == SENSOR_TYPE) {
+                    SensorManager.getRotationMatrixFromVector(
+                        rotMat,
+                        event.values
+                    )
+                    SensorManager
+                        .remapCoordinateSystem(
+                            rotMat,
+                            SensorManager.AXIS_X,
+                            SensorManager.AXIS_Y,
+                            rotMat
+                        )
+                    SensorManager.getOrientation(rotMat, vals)
+                    val azimuth = Math.toDegrees(vals[0].toDouble()) // in degrees [-180, +180]
+                    val pitch = Math.toDegrees(vals[1].toDouble())
+                    val roll = Math.toDegrees(vals[2].toDouble())
+
+                    sendBlocking(Attitude(azimuth, pitch, roll))
+                }
+            }
+
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+            }
+
+        }
+
+        Log.d(TAG, "start: AttitudeProvider")
         sensorManager.registerListener(
-            this,
+            callback,
             rotationVectorSensor, 10000
         )
-//        if (samplingSlow) 250000 else 10000
-    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun stop() {
-        Log.d("aaa", "stop: AttitudeProvider")
-        sensorManager.unregisterListener(this)
-    }
-
-
-    override fun onSensorChanged(event: SensorEvent) {
-        if (event.sensor.type == SENSOR_TYPE) {
-            SensorManager.getRotationMatrixFromVector(
-                rotMat,
-                event.values
-            )
-            SensorManager
-                .remapCoordinateSystem(
-                    rotMat,
-                    SensorManager.AXIS_X,
-                    SensorManager.AXIS_Y,
-                    rotMat
-                )
-            SensorManager.getOrientation(rotMat, vals)
-            val azimuth = Math.toDegrees(vals[0].toDouble()) // in degrees [-180, +180]
-            val pitch = Math.toDegrees(vals[1].toDouble())
-            val roll = Math.toDegrees(vals[2].toDouble())
-            _attitude.postValue(Attitude(azimuth, pitch, roll))
+        awaitClose {
+            Log.d(TAG, "stop: AttitudeProvider ")
+            sensorManager.unregisterListener(callback)
         }
+
     }
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
 }

@@ -10,66 +10,81 @@ import android.content.Context
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.*
+import com.eziosoft.simplecompassnetguru.repository.data.Attitude
 import com.eziosoft.simplecompassnetguru.repository.data.DeviceAttitudeProvider
 import com.eziosoft.simplecompassnetguru.repository.data.LocationProvider
+import com.eziosoft.simplecompassnetguru.utils.TAG
 import com.eziosoft.simplecompassnetguru.utils.TargetCalculations
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
 @Singleton
 class DefaultRepository @Inject constructor(
     @ApplicationContext val context: Context,
     private val locationProvider: LocationProvider,
     private val deviceAttitudeProvider: DeviceAttitudeProvider
-) : Repository {
+) : Repository, LifecycleObserver {
 
 
     private val currentDistance = MutableLiveData<Float>()
     private val targetLocation = MutableLiveData<Location>()
     private val currentBearing = MutableLiveData<Float>()
+    private val currentHeading = MutableLiveData<Float>()
     private val currentLocation = MutableLiveData<Location>()
 
+    private var job: Job? = null
 
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            locationProvider.currentLocation.collect() { location ->
-                Log.d("aaa", "currentLocation: ${location}")
-                if (targetLocation.value != null) {
-                    currentDistance.postValue(
-                        TargetCalculations.calculateDistance(
-                            location,
-                            targetLocation.value!!
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    override fun start() {
+        Log.i(TAG, "start: Repository")
+        job = CoroutineScope(Dispatchers.IO).launch {
+            launch {
+                locationProvider.currentLocation.collect() { location ->
+                    if (targetLocation.value != null) {
+                        currentDistance.postValue(
+                            TargetCalculations.calculateDistance(
+                                location,
+                                targetLocation.value!!
+                            )
                         )
-                    )
+                    }
+                    currentLocation.postValue(location)
                 }
-                currentLocation.postValue(location)
             }
+
+            launch {
+                deviceAttitudeProvider.attitude.collect() { attitude ->
+                    if (currentLocation.value != null && targetLocation.value != null) {
+                        currentBearing.postValue(
+                            TargetCalculations.calculateBearing(
+                                currentLocation.value!!,
+                                targetLocation.value!!
+                            )
+                        )
+                    }
+
+                    currentHeading.postValue(attitude.azimuth.toFloat())
+                }
+            }
+
         }
     }
 
-    override fun currentLocation(): LiveData<Location> = currentLocation
 
-    override fun currentHeading(): LiveData<Float> =
-        deviceAttitudeProvider.attitude.map { attitude ->
-//            Log.d("aaa", "currentHeading: ${currentLocation().value != null}  ${targetLocation.value != null} ")
-            if (currentLocation.value != null && targetLocation.value != null) {
-                currentBearing.postValue(
-                    TargetCalculations.calculateBearing(
-                        currentLocation.value!!,
-                        targetLocation.value!!
-                    )
-                )
-            }
-            attitude.azimuth.toFloat()
-        }
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    override fun stop() {
+        Log.i(TAG, "stop: Repository")
+        job?.cancel()
+    }
 
-    override fun currentTargetLocation(): LiveData<Location> = targetLocation
+    override fun currentLocation():LiveData<Location> = currentLocation
+    override fun currentHeading():LiveData<Float> = currentHeading
+
+    override fun currentTargetLocation() = targetLocation
     override fun setTargetLocation(targetLocation: Location) {
         this.targetLocation.postValue(targetLocation)
     }
@@ -78,8 +93,7 @@ class DefaultRepository @Inject constructor(
     override fun currentDistance(): LiveData<Float> = currentDistance
 
     override fun addLifeCycle(lifecycle: Lifecycle) {
-        deviceAttitudeProvider.addLifeCycle(lifecycle)
-        locationProvider.addLifeCycle(lifecycle)
+        lifecycle.addObserver(this)
     }
 
 

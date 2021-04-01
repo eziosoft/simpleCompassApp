@@ -6,6 +6,7 @@
 
 package com.eziosoft.simplecompassnetguru.utils
 
+const val TAG = "aaa"
 fun validateCoordinates(coordinates: String): Boolean {
     val regex = "^(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\$".toRegex()
     return if (!coordinates.matches(regex)) false
