@@ -151,4 +151,3 @@ dependencies {
 kapt {
     correctErrorTypes true //Hilt
 }
-
